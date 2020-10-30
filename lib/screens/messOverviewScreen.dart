@@ -53,58 +53,58 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
             SizedBox(
               height: 10.0,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                // mainAxisAlignment: MainAxisAlignment.spac,
-                children: [
-                  Text('Name:'),
-                  SizedBox(
-                    width: 7.0,
-                  ),
-                  Text(trackIndex['Shop Name'])
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                children: [
-                  Text('Location:'),
-                  SizedBox(
-                    width: 7.0,
-                  ),
-                  Text(trackIndex['Landmark'])
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: Row(
-                children: [
-                  Text('Rating:'),
-                  SizedBox(
-                    width: 7.0,
-                  ),
-                  Text(
-                    '4.2',
-                    // style: TextStyle(fontSize: 20),
-                  )
-                ],
-              ),
-            ),
-            // Row(children: [
-            //   Text('Timings:'),Text('')
-            // ],),
-            SizedBox(
-              height: 10.0,
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            //   child: Row(
+            //     // mainAxisAlignment: MainAxisAlignment.spac,
+            //     children: [
+            //       Text('Name:'),
+            //       SizedBox(
+            //         width: 7.0,
+            //       ),
+            //       Text(trackIndex['Shop Name'])
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            //   child: Row(
+            //     children: [
+            //       Text('Location:'),
+            //       SizedBox(
+            //         width: 7.0,
+            //       ),
+            //       Text(trackIndex['Landmark'])
+            //     ],
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            //   child: Row(
+            //     children: [
+            //       Text('Rating:'),
+            //       SizedBox(
+            //         width: 7.0,
+            //       ),
+            //       Text(
+            //         '4.2',
+            //         // style: TextStyle(fontSize: 20),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // // Row(children: [
+            // //   Text('Timings:'),Text('')
+            // // ],),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
             Card(
               color: Colors.blueAccent,
               elevation: 5.0,
@@ -183,7 +183,7 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
                         child: Container(
                           decoration: BoxDecoration(
                             color: selectedDay == day[index]
-                                ? Theme.of(context).primaryColor
+                                ? Colors.green
                                 : Colors.white,
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
