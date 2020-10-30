@@ -1,23 +1,55 @@
+import 'package:Meeles/widgets/menu.dart';
 import 'package:flutter/material.dart';
-import '../providers/messDetailsData.dart';
+import 'dart:core';
+import 'package:intl/intl.dart';
 
-class MessOverviewScreen extends StatelessWidget {
+class MessOverviewScreen extends StatefulWidget {
   static const id = 'MessOverviewScreen';
-  final List startingTrack = MessDetailsData().loadedMessDetails;
+
+  @override
+  _MessOverviewScreenState createState() => _MessOverviewScreenState();
+}
+
+class _MessOverviewScreenState extends State<MessOverviewScreen> {
+  List<String> day = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+  ];
+  String selectedDay =
+      (DateFormat('EEEEE', 'en_US').format(DateTime.now())).toString();
+  final ScrollController _scrollController = ScrollController();
+
+  final double itemExtent = 90;
+  void _animateScroll(int index) {
+    double offset = index < 0 ? 0 : index * itemExtent;
+    if (offset > _scrollController.position.maxScrollExtent) {
+      offset = _scrollController.position.maxScrollExtent;
+    }
+    _scrollController.animateTo(offset,
+        duration: Duration(milliseconds: 500), curve: Curves.easeIn);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final int trackIndex = ModalRoute.of(context).settings.arguments;
-    return Scaffold(
+    final Map<String, dynamic> trackIndex =
+        ModalRoute.of(context).settings.arguments;
+    return new Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: Text(
-          startingTrack.elementAt(trackIndex).initialdata['shop_name'],
+          // startingTrack.elementAt(trackIndex).initialdata['shop_name'],
+          trackIndex['Shop Name'],
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
             SizedBox(
               height: 10.0,
             ),
@@ -30,9 +62,7 @@ class MessOverviewScreen extends StatelessWidget {
                   SizedBox(
                     width: 7.0,
                   ),
-                  Text(startingTrack
-                      .elementAt(trackIndex)
-                      .initialdata['shop_name'])
+                  Text(trackIndex['Shop Name'])
                 ],
               ),
             ),
@@ -47,9 +77,7 @@ class MessOverviewScreen extends StatelessWidget {
                   SizedBox(
                     width: 7.0,
                   ),
-                  Text(startingTrack
-                      .elementAt(trackIndex)
-                      .initialdata['Landmark'])
+                  Text(trackIndex['Landmark'])
                 ],
               ),
             ),
@@ -103,9 +131,7 @@ class MessOverviewScreen extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          startingTrack
-                              .elementAt(trackIndex)
-                              .initialdata['shop_name'],
+                          trackIndex['Shop Name'],
                           style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold,
@@ -114,7 +140,7 @@ class MessOverviewScreen extends StatelessWidget {
                         ),
                         SizedBox(height: 10.0),
                         Text(
-                          '8009726785',
+                          trackIndex['Address'],
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w500,
@@ -122,7 +148,7 @@ class MessOverviewScreen extends StatelessWidget {
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -140,68 +166,56 @@ class MessOverviewScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: SizedBox(
                 height: 40.0,
-                child: ListView(
+                child: ListView.builder(
+                  controller: _scrollController,
                   scrollDirection: Axis.horizontal,
-                  children: [
-                    GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Color(0xff27AE60),
-                          borderRadius: BorderRadius.circular(18.0),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 8.0,
-                            horizontal: 10.0,
+                  itemCount: 7,
+                  itemBuilder: (BuildContext ctx, int index) {
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedDay = day[index];
+                          });
+                          _animateScroll(index);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: selectedDay == day[index]
+                                ? Theme.of(context).primaryColor
+                                : Colors.white,
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: Theme.of(context).primaryColor,
+                            ),
                           ),
-                          child: Text(
-                            'Sun',
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 8.0,
+                              horizontal: 10.0,
+                            ),
+                            child: Text(
+                              (day[index]).substring(0, 3),
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.w800,
+                                color: selectedDay == day[index]
+                                    ? Colors.white
+                                    : Theme.of(context).primaryColor,
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 8.0,
-                    ),
-                    FlatButton(
-                      color: Color(0xff27AE60),
-                      onPressed: () {},
-                      child: Text('Mon'),
-                    ),
-                    FlatButton(
-                      color: Color(0xff27AE60),
-                      onPressed: () {},
-                      child: Text('Tue'),
-                    ),
-                    FlatButton(
-                      color: Color(0xff27AE60),
-                      onPressed: () {},
-                      child: Text('Wed'),
-                    ),
-                    FlatButton(
-                      color: Color(0xff27AE60),
-                      onPressed: () {},
-                      child: Text('Thu'),
-                    ),
-                    FlatButton(
-                      color: Color(0xff27AE60),
-                      onPressed: () {},
-                      child: Text('Fri'),
-                    ),
-                    FlatButton(
-                      color: Color(0xff27AE60),
-                      onPressed: () {},
-                      child: Text('Sat'),
-                    ),
-                  ],
+                    );
+                  },
                 ),
               ),
+            ),
+            MenuWidget(
+              getday: selectedDay,
+              mess_email: trackIndex['Email'],
             ),
           ],
         ),

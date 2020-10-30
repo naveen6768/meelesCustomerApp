@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "618806748104",
+    "firebase_url": "https://meeles-786110.firebaseio.com",
+    "project_id": "meeles-786110",
+    "storage_bucket": "meeles-786110.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618806748104:android:92ea2a56d727eb274716fd",
+        "android_client_info": {
+          "package_name": "com.angrybaaz.meelesapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618806748104-3vs0oe8qmg7hsko8d3m673c160cdna75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqa6STo3hwBgx7kahkPT0QVYOHAXcCnqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618806748104-3vs0oe8qmg7hsko8d3m673c160cdna75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618806748104:android:c6afbd0e0636a28c4716fd",
+        "android_client_info": {
+          "package_name": "com.example.meeles"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618806748104-3vs0oe8qmg7hsko8d3m673c160cdna75.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqa6STo3hwBgx7kahkPT0QVYOHAXcCnqA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618806748104-3vs0oe8qmg7hsko8d3m673c160cdna75.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

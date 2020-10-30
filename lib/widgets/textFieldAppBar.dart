@@ -6,6 +6,9 @@ class TextFieldAppBar extends StatelessWidget {
     return Flexible(
       child: new TextField(
         decoration: InputDecoration(
+          suffixIcon: Icon(
+            Icons.search,
+          ),
           fillColor: Colors.white,
           filled: true,
           // hintText: 'email',

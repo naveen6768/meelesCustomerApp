@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../components/userProfileSectionDrawer.dart';
 import '../components/drawerInkwellButtons.dart';
+import '../providers/auth.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreenDrawer extends StatelessWidget {
   @override
@@ -19,22 +21,6 @@ class HomeScreenDrawer extends StatelessWidget {
                   color: Theme.of(context).accentColor,
                 ),
               ),
-            ),
-            DrawerButtons(
-              buttonTitle: "Register your Shop",
-              buttonIcon: Icon(
-                Icons.assignment,
-                color: Theme.of(context).accentColor,
-              ),
-              onPressed: () {},
-            ),
-            DrawerButtons(
-              buttonTitle: "Create weekly menu's",
-              buttonIcon: Icon(
-                Icons.assignment,
-                color: Theme.of(context).accentColor,
-              ),
-              onPressed: () {},
             ),
             DrawerButtons(
               buttonTitle: 'About us',
@@ -66,10 +52,10 @@ class HomeScreenDrawer extends StatelessWidget {
                 Icons.backspace,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () {
-                // Navigator.of(context).pop();
-                // Navigator.of(context).pushReplacementNamed('/');
-                // await Provider.of<Auth>(context, listen: false).authlogout();
+              onPressed: () async {
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacementNamed('/');
+                await Provider.of<Auth>(context, listen: false).authlogout();
               },
             ),
           ],

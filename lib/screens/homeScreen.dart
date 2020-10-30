@@ -78,16 +78,7 @@ class HomeScreen extends StatelessWidget {
             ),
             SwitcherButton(),
             Expanded(
-              child: ListView.builder(
-                itemCount: MessDetailsData().loadedMessDetails.length,
-                itemBuilder: (context, index) => ChangeNotifierProvider(
-                  create: (context) => MessDetailsData(),
-                  child: MessTile(
-                    trackIndex: index,
-                  ),
-                ),
-                padding: EdgeInsets.symmetric(vertical: 5.0),
-              ),
+              child: MessTile(),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

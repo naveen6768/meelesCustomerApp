@@ -1,4 +1,4 @@
-name: meelesCustomerApp
+name: Meeles
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -23,16 +23,27 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.0
   provider: ^4.3.2+2
+  cupertino_icons: ^0.1.3
+  shared_preferences: ^0.5.12
+  http: any
+  cloud_firestore: ^0.14.1+3
+  firebase_auth: ^0.18.1+2
+  firebase_core: ^0.5.0+1
+  time_range: ^0.5.0
+  image_picker: ^0.6.7+11
+  firebase_storage: ^4.0.1
+  intl: ^0.16.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.8.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/meeles_icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
