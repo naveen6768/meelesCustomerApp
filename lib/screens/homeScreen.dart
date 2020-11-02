@@ -56,26 +56,6 @@ class HomeScreen extends StatelessWidget {
             SizedBox(
               height: 10.0,
             ),
-            RaisedButton(
-              onPressed: () {},
-              elevation: 5.0,
-              color: Theme.of(context).accentColor,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 45.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.search),
-                    SizedBox(
-                      width: 5.0,
-                    ),
-                    Text(
-                      'Search Mess',
-                    ),
-                  ],
-                ),
-              ),
-            ),
             SwitcherButton(),
             Expanded(
               child: MessTile(),
