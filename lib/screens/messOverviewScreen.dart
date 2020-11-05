@@ -1,5 +1,6 @@
 import 'package:Meeles/widgets/menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'dart:core';
 import 'package:intl/intl.dart';
 
@@ -141,6 +142,9 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
                         SizedBox(height: 10.0),
                         Text(
                           trackIndex['Address'],
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 1,
+                          softWrap: false,
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w500,
@@ -216,6 +220,9 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
             MenuWidget(
               getday: selectedDay,
               mess_email: trackIndex['Email'],
+              dinner_end: trackIndex['Dinner End'],
+              lunch_end: trackIndex['Lunch End'],
+              isopen: trackIndex['Open Whole Day'],
             ),
           ],
         ),

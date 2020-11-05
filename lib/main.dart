@@ -1,3 +1,4 @@
+import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/messOverviewScreen.dart';
 import './screens/welcomeScreen.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
             WelcomeScreen.id: (context) => WelcomeScreen(),
             LoginScreen.id: (context) => LoginScreen(),
             MessOverviewScreen.id: (context) => MessOverviewScreen(),
+            BookRecipt.id: (context) => BookRecipt(),
           },
         ),
       ),
