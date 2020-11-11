@@ -1,3 +1,4 @@
+import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/messOverviewScreen.dart';
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(
           create: (_) => Auth(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MessDetailsData(),
         ),
       ],
       child: Consumer<Auth>(

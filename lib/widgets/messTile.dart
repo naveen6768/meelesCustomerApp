@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../screens/messOverviewScreen.dart';
+import 'package:provider/provider.dart';
+import '../providers/messDetailsData.dart';
 
 class MessTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var users = FirebaseFirestore.instance
-        .collection('Mess')
-        .where('Landmark', isEqualTo: 'KIET College');
+    String show = Provider.of<MessDetailsData>(context).showshop;
+    String landmark = Provider.of<MessDetailsData>(context).landarea;
+    var users;
+    if (show != 'Both')
+      users = FirebaseFirestore.instance
+          .collection('Mess')
+          .where('Landmark', isEqualTo: landmark)
+          .where('Service Type', isEqualTo: show);
+    else
+      users = FirebaseFirestore.instance
+          .collection('Mess')
+          .where('Landmark', isEqualTo: landmark);
     return StreamBuilder<QuerySnapshot>(
         stream: users.snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -25,12 +36,12 @@ class MessTile extends StatelessWidget {
               ],
             );
           }
-
           if (snapshot.connectionState == ConnectionState.waiting) {
             return CircularProgressIndicator(
               semanticsLabel: "Sabr Karo",
             );
           }
+
           return new ListView(
             children: snapshot.data.docs.map((DocumentSnapshot document) {
               return Container(
@@ -45,6 +56,8 @@ class MessTile extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).pushNamed(MessOverviewScreen.id,
                           arguments: document.data());
+                      Provider.of<MessDetailsData>(context, listen: false)
+                          .getmess(document.data());
                     },
                     contentPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                     leading: Container(
@@ -53,8 +66,10 @@ class MessTile extends StatelessWidget {
                       decoration: BoxDecoration(
                         image: DecorationImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(
-                              'https://assets.change.org/photos/5/qv/fq/NCQvFQlTqDIeZlW-1600x900-noPad.jpg?1485459994'),
+                          image: document.data()['url'] == null
+                              ? NetworkImage(
+                                  'https://assets.change.org/photos/5/qv/fq/NCQvFQlTqDIeZlW-1600x900-noPad.jpg?1485459994')
+                              : NetworkImage(document.data()['url']),
                         ),
                       ),
                     ),
@@ -70,7 +85,7 @@ class MessTile extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          '4.5',
+                          '${document.data()['Rating']}',
                           style: TextStyle(
                             fontWeight: FontWeight.w800,
                             color: Colors.white,

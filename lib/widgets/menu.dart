@@ -1,8 +1,10 @@
+import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class MenuWidget extends StatelessWidget {
   String getday;
@@ -20,87 +22,18 @@ class MenuWidget extends StatelessWidget {
   String today = DateFormat('EEEEE', 'en_US').format(DateTime.now());
   @override
   Widget build(BuildContext context) {
-    final heightOne = MediaQuery.of(context).size.height;
-    print(dinner_end);
-    print(dinner_end.runtimeType);
-    Future<void> _placedorder(
-      String type,
-      seats,
-      prebookingtime,
-      instantseat,
-    ) async {
-      bool isallowed;
-      var meelend;
-      double dif2;
-      if (type == 'Lunch')
-        meelend = TimeOfDay(
-            hour: int.parse(lunch_end.split(":")[0]),
-            minute: int.parse(lunch_end.split(":")[1].split(" ")[0]));
-      else {
-        meelend = TimeOfDay(
-            hour: int.parse(dinner_end.split(":")[0]),
-            minute: int.parse(dinner_end.split(":")[1].split(" ")[0]));
-      }
-      var nowTime = TimeOfDay.now();
-      var prebooking = TimeOfDay(
-          hour: int.parse(prebookingtime.split(":")[0]),
-          minute: int.parse(prebookingtime.split(":")[1].split(" ")[0]));
-      double doublemeelend =
-          meelend.hour.toDouble() + meelend.minute.toDouble() / 60;
-      double doublenowTime =
-          nowTime.hour.toDouble() + nowTime.minute.toDouble() / 60;
-      double prebookTime =
-          prebooking.hour.toDouble() + prebooking.minute.toDouble() / 60;
-      if (prebookingtime.split(" ")[1] == 'PM')
-        dif2 = doublenowTime - prebookTime + 5.5 - 12;
-      else
-        dif2 = doublenowTime - prebookTime + 5.5;
-      double dif = doublenowTime - doublemeelend + 5.5 - 12;
-      print(dif2);
-      print(dif);
-      print(TimeOfDay.now());
-      if (isopen) {
-        if (dif < 0) {
-          isallowed = true;
-        } else
-          isallowed = false;
-      } else if (dif2 < 0)
-        isallowed = true;
-      else if (dif2 < 0 && instantseat != 0)
-        isallowed = true;
-      else
-        isallowed = false;
+    bool isallowed;
+    var meelend, prebooking;
+    double dif2, dif, doublemeelend, prebookTime;
+    var nowTime = TimeOfDay.now();
+    double doublenowTime =
+        nowTime.hour.toDouble() + nowTime.minute.toDouble() / 60;
 
-      print(isallowed);
-      if (isallowed) {
-        var docref = await instant
-            .doc(mess_email)
-            .collection('Other Details')
-            .doc('Booking')
-            .collection(DateFormat.yMMMMEEEEd().format(DateTime.now()))
-            .add({
-              'Name': currentuser.email,
-              'Phone No': '1234567890',
-              'Photo':
-                  'https://png.pngtree.com/png-vector/20190827/ourlarge/pngtree-avatar-png-image_1700114.jpg',
-              'Type': type,
-              'Food Taken': false,
-              'Payment Mode': 'Cash'
-            })
-            .then((value) => value.id)
-            .catchError((error) {
-              var message = "An Error occured, Please Check your Credentials";
-              if (error.message != null) message = error.message;
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(message),
-                  backgroundColor: Theme.of(context).errorColor,
-                ),
-              );
-            });
-        print(docref);
-        Navigator.of(context).pushNamed(BookRecipt.id, arguments: docref);
-      }
+    Future<void> _placedorder(data) async {
+      var docref = await Provider.of<MessDetailsData>(context, listen: false)
+          .placedorder(data);
+      print(docref);
+      Navigator.of(context).pushNamed(BookRecipt.id, arguments: docref);
     }
 
     return Container(
@@ -117,11 +50,50 @@ class MenuWidget extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
           if (menushot.data.docs.isEmpty) return Text('Aaj Kuch nhi Banraha');
-
           return ListView(
             shrinkWrap: true,
             physics: ScrollPhysics(),
             children: menushot.data.docs.map((QueryDocumentSnapshot document) {
+              if (document.data()['type'] == 'Lunch')
+                meelend = TimeOfDay(
+                    hour: int.parse(lunch_end.split(":")[0]),
+                    minute: int.parse(lunch_end.split(":")[1].split(" ")[0]));
+              else {
+                meelend = TimeOfDay(
+                    hour: int.parse(dinner_end.split(":")[0]),
+                    minute: int.parse(dinner_end.split(":")[1].split(" ")[0]));
+              }
+              prebooking = TimeOfDay(
+                  hour:
+                      int.parse(document.data()['Prebook Time'].split(":")[0]),
+                  minute: int.parse(document
+                      .data()['Prebook Time']
+                      .split(":")[1]
+                      .split(" ")[0]));
+              doublemeelend =
+                  meelend.hour.toDouble() + meelend.minute.toDouble() / 60;
+              prebookTime = prebooking.hour.toDouble() +
+                  prebooking.minute.toDouble() / 60;
+
+              if (document.data()['Prebook Time'].split(" ")[1] == 'PM')
+                dif2 = doublenowTime - prebookTime - 12;
+              else
+                dif2 = doublenowTime - prebookTime;
+              dif = doublenowTime - doublemeelend - 12;
+              print(
+                  "$lunch_end $dinner_end ${document.data()['Prebook Time']}");
+              print(TimeOfDay.now());
+              if (isopen) {
+                if (dif < 0) {
+                  isallowed = true;
+                } else
+                  isallowed = false;
+              } else if (dif2 < 0)
+                isallowed = true;
+              else if (dif2 < 0 && document.data()['Instant'] != 0)
+                isallowed = true;
+              else
+                isallowed = false;
               return new Container(
                 margin: EdgeInsets.fromLTRB(16, 32, 16, 0),
                 padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
@@ -260,24 +232,21 @@ class MenuWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20.0),
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  'https://cdn.pixabay.com/photo/2016/12/26/17/28/food-1932466__340.jpg',
-                                ),
+                                image: document.data()['url'] == null
+                                    ? NetworkImage(
+                                        'https://cdn.pixabay.com/photo/2016/12/26/17/28/food-1932466__340.jpg',
+                                      )
+                                    : NetworkImage(document.data()['url']),
                               ),
                             ),
                           ),
                         ],
                       ),
-                      if (today == getday)
+                      if (today == getday && isallowed)
                         FlatButton(
                           minWidth: double.infinity,
                           onPressed: () {
-                            _placedorder(
-                              document.data()['type'],
-                              document.data()['Instant'],
-                              document.data()['Prebook Time'],
-                              document.data()['Instant'],
-                            );
+                            _placedorder(document.data());
                           },
                           child: Text(
                             'Book Now',

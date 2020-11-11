@@ -1,23 +1,30 @@
+import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:flutter/material.dart';
 import '../widgets/homeScreenDrawer.dart';
-import 'package:provider/provider.dart';
-import '../widgets/switcherButton.dart';
 import '../widgets/textFieldAppBar.dart';
 import '../widgets/textAppBar.dart';
 import '../widgets/menuIconBotton.dart';
 import '../widgets/menuUserIconButton.dart';
-import '../widgets/filterButton.dart';
+import 'package:provider/provider.dart';
 import '../components/containerClipper.dart';
-// import '../models/messDetails.dart';
 import '../widgets/messTile.dart';
-import '../providers/messDetailsData.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const id = 'HomeScreen';
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
+    String show = 'Both';
+
     return Scaffold(
       key: _drawerKey,
       drawer: HomeScreenDrawer(),
@@ -39,14 +46,8 @@ class HomeScreen extends StatelessWidget {
                     ),
                     Container(
                       height: 68.0,
-                      width: 180.0,
-                      child: Column(
-                        children: [
-                          TextAppBar(),
-                          SizedBox(height: 7.0),
-                          TextFieldAppBar(),
-                        ],
-                      ),
+                      width: 250.0,
+                      child: TextAppBar(),
                     ),
                     UserIconButton(),
                   ],
@@ -54,30 +55,42 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 10.0,
+              height: 30.0,
             ),
-            SwitcherButton(),
+            ToggleSwitch(
+              initialLabelIndex: 0,
+              inactiveFgColor: Colors.white,
+              labels: ['All', 'Mess', 'Tifin'],
+              onToggle: (index) {
+                print('switched to: $index');
+                Provider.of<MessDetailsData>(context, listen: false)
+                    .setshow(index);
+              },
+            ),
+            SizedBox(
+              height: 30,
+            ),
             Expanded(
               child: MessTile(),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FilterButton(
-                    buttonIcon: Icon(Icons.filter),
-                    buttonTitle: 'Filter',
-                    buttonOnPressed: () {},
-                  ),
-                  FilterButton(
-                    buttonIcon: Icon(Icons.sort),
-                    buttonTitle: 'Sort',
-                    buttonOnPressed: () {},
-                  ),
-                ],
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(8.0),
+            //   child: Row(
+            //     mainAxisSize: MainAxisSize.min,
+            //     children: [
+            //       FilterButton(
+            //         buttonIcon: Icon(Icons.filter),
+            //         buttonTitle: 'Filter',
+            //         buttonOnPressed: () {},
+            //       ),
+            //       FilterButton(
+            //         buttonIcon: Icon(Icons.sort),
+            //         buttonTitle: 'Sort',
+            //         buttonOnPressed: () {},
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

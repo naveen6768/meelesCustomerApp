@@ -54,58 +54,6 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
             SizedBox(
               height: 10.0,
             ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            //   child: Row(
-            //     // mainAxisAlignment: MainAxisAlignment.spac,
-            //     children: [
-            //       Text('Name:'),
-            //       SizedBox(
-            //         width: 7.0,
-            //       ),
-            //       Text(trackIndex['Shop Name'])
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 10.0,
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            //   child: Row(
-            //     children: [
-            //       Text('Location:'),
-            //       SizedBox(
-            //         width: 7.0,
-            //       ),
-            //       Text(trackIndex['Landmark'])
-            //     ],
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 10.0,
-            // ),
-            // Padding(
-            //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            //   child: Row(
-            //     children: [
-            //       Text('Rating:'),
-            //       SizedBox(
-            //         width: 7.0,
-            //       ),
-            //       Text(
-            //         '4.2',
-            //         // style: TextStyle(fontSize: 20),
-            //       )
-            //     ],
-            //   ),
-            // ),
-            // // Row(children: [
-            // //   Text('Timings:'),Text('')
-            // // ],),
-            // SizedBox(
-            //   height: 10.0,
-            // ),
             Card(
               color: Colors.blueAccent,
               elevation: 5.0,
@@ -120,9 +68,11 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
                   children: [
                     CircleAvatar(
                       radius: 35.0,
-                      backgroundImage: NetworkImage(
-                        'https://png.pngtree.com/png-vector/20190827/ourlarge/pngtree-avatar-png-image_1700114.jpg',
-                      ),
+                      backgroundImage: trackIndex['url'] == null
+                          ? NetworkImage(
+                              'https://cdn.pixabay.com/photo/2016/12/26/17/28/food-1932466__340.jpg',
+                            )
+                          : NetworkImage(trackIndex['url']),
                     ),
                     SizedBox(
                       width: 20.0,

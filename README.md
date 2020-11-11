@@ -1,4 +1,4 @@
-# meelesCustomerApp
+# Meeles
 
 A new Flutter project.
 
