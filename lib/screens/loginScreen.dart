@@ -79,10 +79,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Authentication'),
-        centerTitle: true,
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -93,38 +89,41 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image(
-                    image: AssetImage('images/meeles_logo.png'),
-                  ),
+                  // Image(
+                  //   image: AssetImage('images/meeles_logo.png'),
+                  // ),
                   SizedBox(
                     height: 5.0,
                   ),
                   Text(
                     _authmode == AuthMode.Login ? 'Login' : 'Signup',
                     style: Theme.of(context).textTheme.headline1.copyWith(
-                        fontSize: 45.0,
-                        // fontWeight: FontWeight.w600,
-                        color: Theme.of(context).primaryColor),
+                          fontSize: 45.0,
+                          fontWeight: FontWeight.w600,
+                          color: Theme.of(context).primaryColor,
+                          fontFamily: 'Lato',
+                        ),
                   ),
                   SizedBox(
                     height: 12.0,
                   ),
                   Text(
                     'To eat the best quality food near you',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline2
-                        .copyWith(fontSize: 17.0),
+                    style: Theme.of(context).textTheme.headline2.copyWith(
+                          fontSize: 17.0,
+                          fontFamily: 'Lato',
+                        ),
                   ),
                   const SizedBox(
-                    height: 20.0,
+                    height: 18.0,
                   ),
                   Text(
                     'Enter your Email',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline1
-                        .copyWith(fontSize: 25.0, fontWeight: FontWeight.w500),
+                    style: Theme.of(context).textTheme.headline1.copyWith(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Lato',
+                        ),
                   ),
                   const SizedBox(
                     height: 13.0,
@@ -163,10 +162,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   Text(
                     'Enter your password',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline1
-                        .copyWith(fontSize: 25.0, fontWeight: FontWeight.w500),
+                    style: Theme.of(context).textTheme.headline1.copyWith(
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w500,
+                          fontFamily: 'Lato',
+                        ),
                   ),
                   const SizedBox(
                     height: 13.0,
@@ -205,7 +205,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     Text(
                       'Confirm your password',
                       style: Theme.of(context).textTheme.headline1.copyWith(
-                          fontSize: 25.0, fontWeight: FontWeight.w500),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Lato',
+                          ),
                     ),
                   if (_authmode == AuthMode.Signup)
                     const SizedBox(
@@ -251,15 +254,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       elevation: 8.0,
                       onPressed: _submit,
                       color: Theme.of(context).primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 30.0, vertical: 7.0),
                         child: Text(
                           _authmode == AuthMode.Login ? 'Login' : 'Signup',
                           style: Theme.of(context).textTheme.button.copyWith(
-                              color: Colors.white,
-                              fontSize: 25.0,
-                              fontWeight: FontWeight.w600),
+                                color: Colors.white,
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w600,
+                                fontFamily: 'Lato',
+                              ),
                         ),
                       ),
                     ),
@@ -267,42 +275,56 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 22.0,
                   ),
                   Center(
-                    child: RaisedButton(
-                      elevation: 5.0,
-                      onPressed: () {},
-                      color: Color(0xff4285F4),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 7.0),
-                        child: Text(
-                          'Sign In with Google',
-                          style: Theme.of(context).textTheme.button.copyWith(
-                                color: Colors.white,
-                                fontSize: 25.0,
-                                fontWeight: FontWeight.w600,
-                              ),
+                    child: Container(
+                      width: double.infinity,
+                      child: RaisedButton(
+                        elevation: 5.0,
+                        onPressed: () {},
+                        color: Color(0xff4285F4),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20.0, vertical: 7.0),
+                          child: Text(
+                            'Sign In with Google',
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Lato',
+                                ),
+                          ),
                         ),
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 20.0,
+                    height: 10.0,
                   ),
                   Center(
-                    child: RaisedButton(
-                      elevation: 5.0,
-                      onPressed: _switchMode,
-                      color: Theme.of(context).primaryColor,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 82.0, vertical: 7.0),
-                        child: Text(
-                          _authmode == AuthMode.Login ? 'Sigup' : 'Login',
-                          style: Theme.of(context).textTheme.button.copyWith(
-                                color: Colors.white,
-                                fontSize: 25.0,
-                                fontWeight: FontWeight.w600,
-                              ),
+                    child: Container(
+                      width: double.infinity,
+                      child: RaisedButton(
+                        elevation: 5.0,
+                        onPressed: _switchMode,
+                        color: Theme.of(context).primaryColor,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 82.0, vertical: 7.0),
+                          child: Text(
+                            _authmode == AuthMode.Login ? 'Sigup' : 'Login',
+                            style: Theme.of(context).textTheme.button.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Lato',
+                                ),
+                          ),
                         ),
                       ),
                     ),
@@ -318,7 +340,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         style: Theme.of(context).textTheme.headline4.copyWith(
                               fontWeight: FontWeight.w800,
                               color: Theme.of(context).primaryColor,
-                              fontSize: 20.0,
+                              fontSize: 18.0,
+                              fontFamily: 'Lato',
                             ),
                       ),
                     ),

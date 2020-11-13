@@ -9,6 +9,7 @@ class MessDetailsData with ChangeNotifier {
   Map<String, dynamic> mess_details;
   String show = 'Both';
   String landmark = 'KIET College';
+
   void getmess(var doc) {
     mess_details = doc;
     print(mess_details);

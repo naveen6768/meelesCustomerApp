@@ -2,6 +2,7 @@ import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ class MenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isallowed;
     var meelend, prebooking;
+    int bookings;
     double dif2, dif, doublemeelend, prebookTime;
     var nowTime = TimeOfDay.now();
     double doublenowTime =
@@ -34,6 +36,19 @@ class MenuWidget extends StatelessWidget {
           .placedorder(data);
       print(docref);
       Navigator.of(context).pushNamed(BookRecipt.id, arguments: docref);
+    }
+
+    getbookings(type) async {
+      bookings = await instant
+          .doc(mess_email)
+          .collection('Other Details')
+          .doc('Booking')
+          .collection(DateFormat.yMMMMEEEEd().format(DateTime.now()))
+          .where('Type', isEqualTo: type)
+          .get()
+          .then((value) {
+        return value.size;
+      });
     }
 
     return Container(
@@ -54,15 +69,18 @@ class MenuWidget extends StatelessWidget {
             shrinkWrap: true,
             physics: ScrollPhysics(),
             children: menushot.data.docs.map((QueryDocumentSnapshot document) {
-              if (document.data()['type'] == 'Lunch')
+              if (document.data()['type'] == 'Lunch') {
                 meelend = TimeOfDay(
                     hour: int.parse(lunch_end.split(":")[0]),
                     minute: int.parse(lunch_end.split(":")[1].split(" ")[0]));
-              else {
+                getbookings('Lunch');
+              } else {
                 meelend = TimeOfDay(
                     hour: int.parse(dinner_end.split(":")[0]),
                     minute: int.parse(dinner_end.split(":")[1].split(" ")[0]));
+                getbookings('Dinner');
               }
+
               prebooking = TimeOfDay(
                   hour:
                       int.parse(document.data()['Prebook Time'].split(":")[0]),
@@ -88,7 +106,7 @@ class MenuWidget extends StatelessWidget {
                   isallowed = true;
                 } else
                   isallowed = false;
-              } else if (dif2 < 0)
+              } else if (dif2 < 0 && document.data()['Seats'] > bookings)
                 isallowed = true;
               else if (dif2 < 0 && document.data()['Instant'] != 0)
                 isallowed = true;
