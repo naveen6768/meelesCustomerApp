@@ -1,8 +1,10 @@
+import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:Meeles/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'dart:core';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class MessOverviewScreen extends StatefulWidget {
   static const id = 'MessOverviewScreen';
@@ -39,6 +41,7 @@ class _MessOverviewScreenState extends State<MessOverviewScreen> {
   Widget build(BuildContext context) {
     final Map<String, dynamic> trackIndex =
         ModalRoute.of(context).settings.arguments;
+    Provider.of<MessDetailsData>(context).getmess(trackIndex);
     return new Scaffold(
       appBar: AppBar(
         centerTitle: true,

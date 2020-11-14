@@ -2,7 +2,6 @@ import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -25,30 +24,31 @@ class MenuWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isallowed;
     var meelend, prebooking;
-    int bookings;
-    double dif2, dif, doublemeelend, prebookTime;
+    double dif2, dif, doublemeelend, prebookTime, din_dif2, din_dif;
     var nowTime = TimeOfDay.now();
     double doublenowTime =
         nowTime.hour.toDouble() + nowTime.minute.toDouble() / 60;
 
     Future<void> _placedorder(data) async {
+      String cat;
+      if (data['type'] == 'Lunch') {
+        if (dif2 > 0 && dif < 0)
+          cat = '${data['type']} Instant';
+        else
+          cat = data['type'];
+      } else {
+        if (din_dif2 > 0 && din_dif < 0)
+          cat = '${data['type']} Instant';
+        else
+          cat = data['type'];
+      }
       var docref = await Provider.of<MessDetailsData>(context, listen: false)
-          .placedorder(data);
+          .placedorder(
+        data,
+        cat,
+      );
       print(docref);
       Navigator.of(context).pushNamed(BookRecipt.id, arguments: docref);
-    }
-
-    getbookings(type) async {
-      bookings = await instant
-          .doc(mess_email)
-          .collection('Other Details')
-          .doc('Booking')
-          .collection(DateFormat.yMMMMEEEEd().format(DateTime.now()))
-          .where('Type', isEqualTo: type)
-          .get()
-          .then((value) {
-        return value.size;
-      });
     }
 
     return Container(
@@ -69,18 +69,22 @@ class MenuWidget extends StatelessWidget {
             shrinkWrap: true,
             physics: ScrollPhysics(),
             children: menushot.data.docs.map((QueryDocumentSnapshot document) {
+              int bookings;
+              var book;
               if (document.data()['type'] == 'Lunch') {
                 meelend = TimeOfDay(
                     hour: int.parse(lunch_end.split(":")[0]),
                     minute: int.parse(lunch_end.split(":")[1].split(" ")[0]));
-                getbookings('Lunch');
+                book = Provider.of<MessDetailsData>(context, listen: false)
+                    .getbookings('Lunch');
+                print(book);
               } else {
                 meelend = TimeOfDay(
                     hour: int.parse(dinner_end.split(":")[0]),
                     minute: int.parse(dinner_end.split(":")[1].split(" ")[0]));
-                getbookings('Dinner');
+                book = Provider.of<MessDetailsData>(context, listen: false)
+                    .getbookings('Dinner');
               }
-
               prebooking = TimeOfDay(
                   hour:
                       int.parse(document.data()['Prebook Time'].split(":")[0]),
@@ -98,20 +102,23 @@ class MenuWidget extends StatelessWidget {
               else
                 dif2 = doublenowTime - prebookTime;
               dif = doublenowTime - doublemeelend - 12;
-              print(
-                  "$lunch_end $dinner_end ${document.data()['Prebook Time']}");
-              print(TimeOfDay.now());
+
+              if (document.data()['type'] == 'Dinner') {
+                din_dif = dif;
+                din_dif2 = dif2;
+              }
               if (isopen) {
                 if (dif < 0) {
                   isallowed = true;
                 } else
                   isallowed = false;
-              } else if (dif2 < 0 && document.data()['Seats'] > bookings)
+              } else if (dif2 < 0 && int.parse(document.data()['Seats']) != 0)
                 isallowed = true;
-              else if (dif2 < 0 && document.data()['Instant'] != 0)
+              else if (dif < 0 && document.data()['Instant'] != 0)
                 isallowed = true;
               else
                 isallowed = false;
+
               return new Container(
                 margin: EdgeInsets.fromLTRB(16, 32, 16, 0),
                 padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 10.0),
@@ -270,6 +277,19 @@ class MenuWidget extends StatelessWidget {
                             'Book Now',
                             style: TextStyle(
                               color: Colors.green,
+                              fontFamily: 'Lato',
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        )
+                      else if (today == getday)
+                        FlatButton(
+                          minWidth: double.infinity,
+                          onPressed: () {},
+                          child: Text(
+                            'Time Over',
+                            style: TextStyle(
+                              color: Colors.red,
                               fontFamily: 'Lato',
                               fontWeight: FontWeight.w900,
                             ),

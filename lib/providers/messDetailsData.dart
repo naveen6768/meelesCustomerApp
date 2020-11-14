@@ -9,24 +9,48 @@ class MessDetailsData with ChangeNotifier {
   Map<String, dynamic> mess_details;
   String show = 'Both';
   String landmark = 'KIET College';
+  int bookings;
 
   void getmess(var doc) {
     mess_details = doc;
-    print(mess_details);
+    notifyListeners();
   }
 
-  Future<Map<String, dynamic>> placedorder(data) async {
-    var docref = await instant
+  Future<int> getbookings(type) async {
+    await instant
         .doc(mess_details['Email'])
         .collection('Other Details')
         .doc('Booking')
         .collection(DateFormat.yMMMMEEEEd().format(DateTime.now()))
+        .where('Type', isEqualTo: type)
+        .get()
+        .then((value) {
+      bookings = value.size;
+    }).whenComplete(() => null);
+    return bookings;
+  }
+
+  get books {
+    print(bookings);
+    return bookings;
+  }
+
+  Future<Map<String, dynamic>> placedorder(data, cat) async {
+    DocumentReference documentReference = FirebaseFirestore.instance
+        .collection('Mess')
+        .doc(mess_details['Email'])
+        .collection('Booking')
+        .doc(DateFormat.yMMMMEEEEd().format(DateTime.now()));
+
+    var docref = await documentReference
+        .collection(cat)
         .add({
+          'Mess Name': mess_details['Shop Name'],
           'Name': currentuser.email,
           'Phone No': '1234567890',
           'Photo':
               'https://png.pngtree.com/png-vector/20190827/ourlarge/pngtree-avatar-png-image_1700114.jpg',
-          'Type': data['type'],
+          'Type': cat,
           'Food Taken': false,
           'Payment Mode': 'Cash',
           'Price': data['Price'],
@@ -34,16 +58,40 @@ class MessDetailsData with ChangeNotifier {
           'Item2': data['Item2'],
           'Item3': data['Item3'],
           'Item4': data['Item4'],
+          'Booking Time': TimeOfDay.now().toString(),
           'Roti Quantity': data['Roti Quantity'],
           'Rice Type': data['Rice Type'],
           'Desert': data['Desert'],
         })
         .then((value) => value.id)
         .catchError((error) {
-          var message = "An Error occured, Please Check your Credentials";
-          if (error.message != null) message = error.message;
-          return message;
+          if (error != null) return error;
         });
+
+    FirebaseFirestore.instance.runTransaction((transaction) async {
+      int updated;
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+      if (!snapshot.exists) {
+        await documentReference.set({
+          'Lunch Instant': 0,
+          'Lunch': 0,
+          'Dinner': 0,
+          'Dinner Instant': 0,
+        });
+      }
+      if (cat[cat.length - 1] == 't') {
+        if (snapshot.data()[cat] == 0)
+          updated = int.parse(data['Instant']) - 1;
+        else
+          updated = snapshot.data()[cat] - 1;
+      } else {
+        if (snapshot.data()[cat] == 0)
+          updated = int.parse(data['Seats']) - 1;
+        else
+          updated = snapshot.data()[cat] - 1;
+      }
+      transaction.update(documentReference, {'$cat': updated});
+    });
     return {
       'docref': docref,
       'Name': currentuser.email,
