@@ -69,21 +69,14 @@ class MenuWidget extends StatelessWidget {
             shrinkWrap: true,
             physics: ScrollPhysics(),
             children: menushot.data.docs.map((QueryDocumentSnapshot document) {
-              int bookings;
-              var book;
               if (document.data()['type'] == 'Lunch') {
                 meelend = TimeOfDay(
                     hour: int.parse(lunch_end.split(":")[0]),
                     minute: int.parse(lunch_end.split(":")[1].split(" ")[0]));
-                book = Provider.of<MessDetailsData>(context, listen: false)
-                    .getbookings('Lunch');
-                print(book);
               } else {
                 meelend = TimeOfDay(
                     hour: int.parse(dinner_end.split(":")[0]),
                     minute: int.parse(dinner_end.split(":")[1].split(" ")[0]));
-                book = Provider.of<MessDetailsData>(context, listen: false)
-                    .getbookings('Dinner');
               }
               prebooking = TimeOfDay(
                   hour:
@@ -112,9 +105,9 @@ class MenuWidget extends StatelessWidget {
                   isallowed = true;
                 } else
                   isallowed = false;
-              } else if (dif2 < 0 && int.parse(document.data()['Seats']) != 0)
+              } else if (dif2 < 0)
                 isallowed = true;
-              else if (dif < 0 && document.data()['Instant'] != 0)
+              else if (dif < 0)
                 isallowed = true;
               else
                 isallowed = false;
@@ -268,20 +261,147 @@ class MenuWidget extends StatelessWidget {
                         ],
                       ),
                       if (today == getday && isallowed)
-                        FlatButton(
-                          minWidth: double.infinity,
-                          onPressed: () {
-                            _placedorder(document.data());
-                          },
-                          child: Text(
-                            'Book Now',
-                            style: TextStyle(
-                              color: Colors.green,
-                              fontFamily: 'Lato',
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                        )
+                        StreamBuilder<DocumentSnapshot>(
+                            stream: instant
+                                .doc(mess_email)
+                                .collection('Booking')
+                                .doc(DateFormat.yMMMMEEEEd()
+                                    .format(DateTime.now()))
+                                .snapshots(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return FlatButton(
+                                  minWidth: double.infinity,
+                                  onPressed: () {},
+                                  child: Text(
+                                    'Loading Status',
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontFamily: 'Lato',
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                );
+                              }
+                              Map<String, dynamic> data = snapshot.data.data();
+                              if (data == null) {
+                                return Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                    FlatButton(
+                                      onPressed: () {
+                                        _placedorder(document.data());
+                                      },
+                                      child: Text(
+                                        'Book Now',
+                                        style: TextStyle(
+                                          color: Colors.green,
+                                          fontFamily: 'Lato',
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Seats Available',
+                                      style: TextStyle(
+                                        fontFamily: 'Lato',
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              } else {
+                                if (dif2 < 0) {
+                                  if (data[document.data()['type']] == 0)
+                                    return FlatButton(
+                                      minWidth: double.infinity,
+                                      onPressed: () {},
+                                      child: Text(
+                                        'Seats Full',
+                                        style: TextStyle(
+                                          color: Colors.red,
+                                          fontFamily: 'Lato',
+                                          fontWeight: FontWeight.w900,
+                                        ),
+                                      ),
+                                    );
+                                  else
+                                    return Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: <Widget>[
+                                        FlatButton(
+                                          onPressed: () {
+                                            _placedorder(document.data());
+                                          },
+                                          child: Text(
+                                            'Book Now',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontFamily: 'Lato',
+                                              fontWeight: FontWeight.w900,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          'Seats left: ${data[document.data()['type']]}',
+                                          style: TextStyle(
+                                            fontFamily: 'Lato',
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                } else if (data[
+                                        '${document.data()['type']} Instant'] ==
+                                    0)
+                                  return FlatButton(
+                                    minWidth: double.infinity,
+                                    onPressed: () {},
+                                    child: Text(
+                                      'Seats Full',
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontFamily: 'Lato',
+                                        fontWeight: FontWeight.w900,
+                                      ),
+                                    ),
+                                  );
+                                else
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          _placedorder(document.data());
+                                        },
+                                        child: Text(
+                                          'Book Now',
+                                          style: TextStyle(
+                                            color: Colors.green,
+                                            fontFamily: 'Lato',
+                                            fontWeight: FontWeight.w900,
+                                          ),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Seats left: ${data['${document.data()['type']} Instant']}',
+                                        style: TextStyle(
+                                          fontFamily: 'Lato',
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                              }
+                            })
                       else if (today == getday)
                         FlatButton(
                           minWidth: double.infinity,

@@ -1,3 +1,6 @@
+import 'package:Meeles/screens/aboutus_screen.dart';
+import 'package:Meeles/screens/contactus_screen.dart';
+import 'package:Meeles/screens/feedback_screen.dart';
 import 'package:flutter/material.dart';
 import '../components/userProfileSectionDrawer.dart';
 import '../components/drawerInkwellButtons.dart';
@@ -28,7 +31,9 @@ class HomeScreenDrawer extends StatelessWidget {
                 Icons.business_center,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(AboutUs.routeName);
+              },
             ),
             DrawerButtons(
               buttonTitle: 'Feedback',
@@ -36,7 +41,9 @@ class HomeScreenDrawer extends StatelessWidget {
                 Icons.feedback,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(FeedbackForm.routeName);
+              },
             ),
             DrawerButtons(
               buttonTitle: 'Contact us',
@@ -44,7 +51,9 @@ class HomeScreenDrawer extends StatelessWidget {
                 Icons.phone,
                 color: Theme.of(context).accentColor,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(ContactUs.routeName);
+              },
             ),
             DrawerButtons(
               buttonTitle: 'Logout',
