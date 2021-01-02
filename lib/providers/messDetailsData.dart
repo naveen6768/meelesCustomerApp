@@ -16,7 +16,7 @@ class MessDetailsData with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>> placedorder(data, cat) async {
+  Future<Map<String, dynamic>> placedorder(data, cat, mode) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('Mess')
         .doc(mess_details['Email'])
@@ -33,7 +33,7 @@ class MessDetailsData with ChangeNotifier {
               'https://png.pngtree.com/png-vector/20190827/ourlarge/pngtree-avatar-png-image_1700114.jpg',
           'Type': cat,
           'Food Taken': false,
-          'Payment Mode': 'Cash',
+          'Payment Mode': mode,
           'Price': data['Price'],
           'Item1': data['Item1'],
           'Item2': data['Item2'],
@@ -73,25 +73,32 @@ class MessDetailsData with ChangeNotifier {
       }
       transaction.update(documentReference, {'$cat': updated});
     });
-    return {
-      'docref': docref,
+    var bookingdetails;
+    bookingdetails = await FirebaseFirestore.instance
+        .collection('Customer')
+        .doc(currentuser.email)
+        .collection('Bookings')
+        .add({
+      'Order Id': docref,
       'Name': currentuser.email,
       'Phone No': '1234567890',
-      'Photo':
-          'https://png.pngtree.com/png-vector/20190827/ourlarge/pngtree-avatar-png-image_1700114.jpg',
       'Type': data['type'],
       'Food Taken': false,
-      'Payment Mode': 'Cash',
+      'Payment Mode': mode,
       'Price': data['Price'],
       'Item1': data['Item1'],
       'Item2': data['Item2'],
       'Item3': data['Item3'],
       'Item4': data['Item4'],
+      'Mess Name': mess_details['Shop Name'],
+      'Date': DateFormat.yMd().add_jm().format(new DateTime.now()),
       'Roti Quantity': data['Roti Quantity'],
       'Rice Type': data['Rice Type'],
       'Desert': data['Desert'],
       'url': data['url'],
-    };
+    }).then((value) => value.get());
+    print('Bookig Details are $bookingdetails');
+    return bookingdetails.data();
   }
 
   void setshow(int index) {

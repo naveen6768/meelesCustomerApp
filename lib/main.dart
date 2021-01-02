@@ -1,8 +1,10 @@
 import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:Meeles/screens/aboutus_screen.dart';
+import 'package:Meeles/screens/addmoney_screen.dart';
 import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:Meeles/screens/contactus_screen.dart';
 import 'package:Meeles/screens/feedback_screen.dart';
+import 'package:Meeles/screens/viewbookings_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/messOverviewScreen.dart';
 import './screens/welcomeScreen.dart';
@@ -12,6 +14,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import './providers/auth.dart';
 import './screens/feedback_screen.dart';
+import './screens/wallet_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,6 +57,9 @@ class MyApp extends StatelessWidget {
             ContactUs.routeName: (context) => ContactUs(),
             AboutUs.routeName: (context) => AboutUs(),
             FeedbackForm.routeName: (context) => FeedbackForm(),
+            Wallet.routeName: (context) => Wallet(),
+            AddMoney.routeName: (context) => AddMoney(),
+            ViewBookings.routeName: (context) => ViewBookings(),
           },
         ),
       ),

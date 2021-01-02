@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class MenuWidget extends StatelessWidget {
+enum Mode { cash, wallet }
+
+class MenuWidget extends StatefulWidget {
   String getday;
   String mess_email, dinner_end, lunch_end;
   bool isopen;
-  var currentuser = FirebaseAuth.instance.currentUser;
+
   MenuWidget({
     this.getday,
     this.mess_email,
@@ -18,16 +20,81 @@ class MenuWidget extends StatelessWidget {
     this.lunch_end,
     this.isopen,
   });
+
+  @override
+  _MenuWidgetState createState() => _MenuWidgetState();
+}
+
+class _MenuWidgetState extends State<MenuWidget> {
+  Mode mode = Mode.cash;
+
+  var currentuser = FirebaseAuth.instance.currentUser;
+
   var instant = FirebaseFirestore.instance.collection('Mess');
+
   String today = DateFormat('EEEEE', 'en_US').format(DateTime.now());
+
   @override
   Widget build(BuildContext context) {
     bool isallowed;
-    var meelend, prebooking;
+    var meelend, prebooking, payment_mode = 'Cash';
     double dif2, dif, doublemeelend, prebookTime, din_dif2, din_dif;
     var nowTime = TimeOfDay.now();
     double doublenowTime =
         nowTime.hour.toDouble() + nowTime.minute.toDouble() / 60;
+
+    Future<void> _showMyDialog() async {
+      return showDialog<void>(
+        context: context,
+        barrierDismissible: false, // user must tap button!
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Mode Of Payment'),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: const Text('Cash'),
+                  leading: Radio(
+                    value: Mode.cash,
+                    groupValue: mode,
+                    onChanged: (Mode value) {
+                      print(value);
+                      setState(() {
+                        mode = value;
+                      });
+                      payment_mode = 'Wallet';
+                    },
+                  ),
+                ),
+                ListTile(
+                  title: const Text('Wallet'),
+                  leading: Radio(
+                    value: Mode.wallet,
+                    groupValue: mode,
+                    onChanged: (Mode value) {
+                      print(value);
+                      setState(() {
+                        mode = value;
+                      });
+                      payment_mode = 'Cash';
+                    },
+                  ),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Select'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
 
     Future<void> _placedorder(data) async {
       String cat;
@@ -42,11 +109,10 @@ class MenuWidget extends StatelessWidget {
         else
           cat = data['type'];
       }
+
+      //await _showMyDialog();
       var docref = await Provider.of<MessDetailsData>(context, listen: false)
-          .placedorder(
-        data,
-        cat,
-      );
+          .placedorder(data, cat, 'Wallet');
       print(docref);
       Navigator.of(context).pushNamed(BookRecipt.id, arguments: docref);
     }
@@ -55,10 +121,10 @@ class MenuWidget extends StatelessWidget {
       height: 450,
       child: StreamBuilder<QuerySnapshot>(
         stream: instant
-            .doc(mess_email)
+            .doc(widget.mess_email)
             .collection('Other Details')
             .doc('Menu')
-            .collection(getday)
+            .collection(widget.getday)
             .snapshots(includeMetadataChanges: true),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> menushot) {
           if (menushot.connectionState == ConnectionState.waiting) {
@@ -71,12 +137,14 @@ class MenuWidget extends StatelessWidget {
             children: menushot.data.docs.map((QueryDocumentSnapshot document) {
               if (document.data()['type'] == 'Lunch') {
                 meelend = TimeOfDay(
-                    hour: int.parse(lunch_end.split(":")[0]),
-                    minute: int.parse(lunch_end.split(":")[1].split(" ")[0]));
+                    hour: int.parse(widget.lunch_end.split(":")[0]),
+                    minute: int.parse(
+                        widget.lunch_end.split(":")[1].split(" ")[0]));
               } else {
                 meelend = TimeOfDay(
-                    hour: int.parse(dinner_end.split(":")[0]),
-                    minute: int.parse(dinner_end.split(":")[1].split(" ")[0]));
+                    hour: int.parse(widget.dinner_end.split(":")[0]),
+                    minute: int.parse(
+                        widget.dinner_end.split(":")[1].split(" ")[0]));
               }
               prebooking = TimeOfDay(
                   hour:
@@ -100,7 +168,7 @@ class MenuWidget extends StatelessWidget {
                 din_dif = dif;
                 din_dif2 = dif2;
               }
-              if (isopen) {
+              if (widget.isopen) {
                 if (dif < 0) {
                   isallowed = true;
                 } else
@@ -260,10 +328,10 @@ class MenuWidget extends StatelessWidget {
                           ),
                         ],
                       ),
-                      if (today == getday && isallowed)
+                      if (today == widget.getday && isallowed)
                         StreamBuilder<DocumentSnapshot>(
                             stream: instant
-                                .doc(mess_email)
+                                .doc(widget.mess_email)
                                 .collection('Booking')
                                 .doc(DateFormat.yMMMMEEEEd()
                                     .format(DateTime.now()))
@@ -286,7 +354,8 @@ class MenuWidget extends StatelessWidget {
                                 );
                               }
                               Map<String, dynamic> data = snapshot.data.data();
-                              if (data == null) {
+                              if (data == null ||
+                                  data['${document.data()['type']}'] == 999) {
                                 return Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceEvenly,
@@ -402,7 +471,7 @@ class MenuWidget extends StatelessWidget {
                                   );
                               }
                             })
-                      else if (today == getday)
+                      else if (today == widget.getday)
                         FlatButton(
                           minWidth: double.infinity,
                           onPressed: () {},

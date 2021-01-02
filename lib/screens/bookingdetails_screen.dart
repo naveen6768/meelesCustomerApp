@@ -33,7 +33,7 @@ class BookRecipt extends StatelessWidget {
           child: Column(
             children: <Widget>[
               QrImage(
-                data: bookingid['docref'],
+                data: bookingid['Order Id'],
                 version: QrVersions.auto,
                 size: 200.0,
               ),

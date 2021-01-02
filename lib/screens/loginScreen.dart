@@ -3,6 +3,7 @@ import './homeScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 import '../providers/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 enum AuthMode {
   Login,
@@ -19,12 +20,20 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formkey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
+  final _phonenumber = TextEditingController();
+  final _codetext = TextEditingController();
+  var _phonenode = FocusNode();
   var _authmode = AuthMode.Login;
-  var _isLoading = false;
+  var _isLoading = false, verify = false;
   final passwordnode = FocusNode();
   final confirmnode = FocusNode();
+  final codenode = FocusNode();
   var email = '';
   var password = '';
+  var phoneno = '';
+  var code = '';
+  PhoneAuthCredential credential;
+  UserCredential authresult;
   Future<void> _submit() async {
     if (!_formkey.currentState.validate()) {
       return;
@@ -35,11 +44,15 @@ class _LoginScreenState extends State<LoginScreen> {
       });
       try {
         if (_authmode == AuthMode.Login) {
-          await Provider.of<Auth>(context, listen: false)
+          authresult = await Provider.of<Auth>(context, listen: false)
               .authlogin(email, password);
         } else {
-          await Provider.of<Auth>(context, listen: false)
-              .authsignup(email, password);
+          authresult =
+              await Provider.of<Auth>(context, listen: false).authsignup(
+            email,
+            password,
+            credential,
+          );
         }
       } on PlatformException catch (err) {
         var message = "An Error occured, Please Check your Credentials";
@@ -120,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     'Enter your Email',
                     style: Theme.of(context).textTheme.headline1.copyWith(
-                          fontSize: 20.0,
+                          fontSize: 18.0,
                           fontWeight: FontWeight.w500,
                           fontFamily: 'Lato',
                         ),
@@ -243,7 +256,140 @@ class _LoginScreenState extends State<LoginScreen> {
                       focusNode: confirmnode,
                       obscureText: true,
                     ),
-
+                  if (_authmode == AuthMode.Signup)
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                  if (_authmode == AuthMode.Signup)
+                    Text(
+                      'Enter Phone No.',
+                      style: Theme.of(context).textTheme.headline1.copyWith(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Lato',
+                          ),
+                    ),
+                  if (_authmode == AuthMode.Signup)
+                    const SizedBox(
+                      height: 13.0,
+                    ),
+                  if (_authmode == AuthMode.Signup)
+                    TextFormField(
+                      decoration: InputDecoration(
+                        suffixIcon: FlatButton(
+                          color: Theme.of(context).primaryColor,
+                          child: Text(
+                            'Verify',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontFamily: 'Lato',
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          onPressed: () async {
+                            setState(() {
+                              verify = true;
+                            });
+                            await FirebaseAuth.instance.verifyPhoneNumber(
+                              phoneNumber: '+91${_phonenumber.text}',
+                              verificationCompleted:
+                                  (PhoneAuthCredential credential) async {
+                                credential = credential;
+                              },
+                              verificationFailed: (FirebaseAuthException e) {
+                                if (e.code == 'invalid-phone-number') {
+                                  print(
+                                      'The provided phone number is not valid.');
+                                }
+                              },
+                              codeSent: (String verificationId,
+                                  int resendToken) async {
+                                PhoneAuthCredential phoneAuthCredential =
+                                    PhoneAuthProvider.credential(
+                                  verificationId: verificationId,
+                                  smsCode: '123456',
+                                );
+                              },
+                              timeout: const Duration(seconds: 120),
+                              codeAutoRetrievalTimeout:
+                                  (String verificationId) {
+                                print('Time-out');
+                              },
+                            );
+                          },
+                        ),
+                        fillColor: Theme.of(context).accentColor,
+                        filled: true,
+                        // hintText: 'email',
+                        contentPadding: EdgeInsets.symmetric(
+                            vertical: 10.0, horizontal: 20.0),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.white30, width: 1.0),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.black45, width: 2.0),
+                          borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value.length != 10) return 'Invalid Phone Number';
+                      },
+                      onSaved: (value) {
+                        phoneno = value;
+                      },
+                      controller: _phonenumber,
+                      focusNode: _phonenode,
+                    ),
+                  if (verify)
+                    const SizedBox(
+                      height: 16.0,
+                    ),
+                  // if (verify)
+                  //   Text(
+                  //     'Verification Code',
+                  //     style: Theme.of(context).textTheme.headline1.copyWith(
+                  //           fontSize: 18.0,
+                  //           fontWeight: FontWeight.w500,
+                  //           fontFamily: 'Lato',
+                  //         ),
+                  //   ),
+                  // if (verify)
+                  //   const SizedBox(
+                  //     height: 13.0,
+                  //   ),
+                  // if (verify)
+                  //   TextFormField(
+                  //     decoration: InputDecoration(
+                  //       fillColor: Theme.of(context).accentColor,
+                  //       //filled: true,
+                  //       // hintText: 'email',
+                  //       contentPadding: EdgeInsets.symmetric(
+                  //           vertical: 10.0, horizontal: 20.0),
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  //       ),
+                  //       enabledBorder: OutlineInputBorder(
+                  //         borderSide:
+                  //             BorderSide(color: Colors.white30, width: 1.0),
+                  //         borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  //       ),
+                  //       focusedBorder: OutlineInputBorder(
+                  //         borderSide:
+                  //             BorderSide(color: Colors.black45, width: 2.0),
+                  //         borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  //       ),
+                  //     ),
+                  //     controller: _codetext,
+                  //     obscureText: true,
+                  //     onSaved: (val) => code = val,
+                  //     focusNode: codenode,
+                  //   ),
                   const SizedBox(
                     height: 25.0,
                   ),

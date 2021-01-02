@@ -6,19 +6,21 @@ import 'package:flutter/foundation.dart';
 
 class Auth with ChangeNotifier {
   UserCredential authresult;
-  Future<void> authlogin(String email, String password) async {
+  Future<UserCredential> authlogin(String email, String password) async {
     authresult = await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password);
-    print(authresult);
     notifyListeners();
-    return null;
+    return authresult;
   }
 
-  Future<void> authsignup(String email, String password) async {
+  Future<UserCredential> authsignup(
+      String email, String password, PhoneAuthCredential credential) async {
     authresult = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password);
+    FirebaseAuth.instance.currentUser.updatePhoneNumber(credential);
+
     notifyListeners();
-    return null;
+    return authresult;
   }
 
   Future<void> authlogout() async {
