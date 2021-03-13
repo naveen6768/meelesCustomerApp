@@ -4,6 +4,8 @@ import 'package:Meeles/screens/addmoney_screen.dart';
 import 'package:Meeles/screens/bookingdetails_screen.dart';
 import 'package:Meeles/screens/contactus_screen.dart';
 import 'package:Meeles/screens/feedback_screen.dart';
+import 'package:Meeles/screens/mainScreen.dart';
+import 'package:Meeles/screens/messdetail.dart';
 import 'package:Meeles/screens/viewbookings_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/messOverviewScreen.dart';
@@ -47,9 +49,11 @@ class MyApp extends StatelessWidget {
             primaryColor: Color(0xffB4344D),
             cursorColor: Color(0xffB4344D),
           ),
-          home: (auth.isAuth) ? HomeScreen() : LoginScreen(),
+          home: (auth.isAuth) ? MainScreen() : LoginScreen(),
           routes: {
             HomeScreen.id: (context) => HomeScreen(),
+            MainScreen.routeName: (context) => MainScreen(),
+            MessDetail.routeName: (context) => MessDetail(),
             WelcomeScreen.id: (context) => WelcomeScreen(),
             LoginScreen.id: (context) => LoginScreen(),
             MessOverviewScreen.id: (context) => MessOverviewScreen(),

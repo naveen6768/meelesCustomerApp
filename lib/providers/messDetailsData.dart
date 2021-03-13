@@ -11,6 +11,7 @@ class MessDetailsData with ChangeNotifier {
   String landmark = 'KIET College';
   int bookings;
   Map<String, dynamic> seatsleft;
+  var messemail,day,lunchtime,dinnertime,isopen;
   void getmess(var doc) async {
     mess_details = doc;
     notifyListeners();
@@ -122,5 +123,21 @@ class MessDetailsData with ChangeNotifier {
 
   String get landarea {
     return landmark;
+  }
+
+  void setmessvalue(me,lt,dt,io,){
+    messemail = me;
+    lunchtime = lt;
+    dinnertime = dt;
+    isopen = io;
+    notifyListeners();
+  }
+  set daydata(dy){
+    day = dy;
+    notifyListeners();
+  }
+
+  String get messemailid{
+    return messemail;
   }
 }
