@@ -1,7 +1,7 @@
+import 'package:Meeles/helpers/helpermethods.dart';
 import 'package:Meeles/providers/messDetailsData.dart';
 import 'package:flutter/material.dart';
 import '../widgets/homeScreenDrawer.dart';
-import '../widgets/textFieldAppBar.dart';
 import '../widgets/textAppBar.dart';
 import '../widgets/menuIconBotton.dart';
 import '../widgets/menuUserIconButton.dart';
@@ -21,10 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
 
   @override
+  void initState(){
+    HelperMethods().data();
+  }
+  @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     String show = 'Both';
-
     return Scaffold(
       key: _drawerKey,
       drawer: HomeScreenDrawer(),
