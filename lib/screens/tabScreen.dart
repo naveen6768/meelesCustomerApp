@@ -1,4 +1,5 @@
 import 'package:Meeles/screens/mainScreen.dart';
+import 'package:Meeles/screens/messListScreen.dart';
 import 'package:Meeles/screens/profile.dart';
 import 'package:Meeles/screens/searchScreen.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
@@ -15,7 +16,7 @@ class _TabScreenState extends State<TabScreen> {
   static List<Widget> _widgetOptions = <Widget>[
     MainScreen(),
     SearchScreen(),
-    SearchScreen(),
+    MessListScreen(),
     ProfileView(),
   ];
 
@@ -34,9 +35,9 @@ class _TabScreenState extends State<TabScreen> {
         height: 40,
         elevation: 200,
         splashColor: Theme.of(context).primaryColor,
-        inactiveColor: Colors.black38,
-        activeColor: Theme.of(context).primaryColor,
-       // backgroundColor: Theme.of(context).primaryColor,
+        inactiveColor: Colors.white38,
+        activeColor: Colors.white,
+        backgroundColor: Theme.of(context).primaryColor,
         leftCornerRadius: 20,
         rightCornerRadius:20,
       icons: const [Icons.home,Icons.search,Icons.food_bank, Icons.person,],

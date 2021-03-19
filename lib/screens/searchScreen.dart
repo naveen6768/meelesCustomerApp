@@ -16,7 +16,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: HomeScreenDrawer(),
+      //drawer: HomeScreenDrawer(),
       appBar: AppBar(
         title: Text("Search Page", style:TextStyle(fontFamily: 'Lato',fontWeight: FontWeight.bold)),
         centerTitle: false,
@@ -64,6 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
               if(mess != [])
               ListView(
                 shrinkWrap: true,
+                physics: ScrollPhysics(),
               children : mess.map((element){
                   return InkWell(
                     onTap: (){
@@ -97,6 +98,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
               if(food != [])
               ListView(
+                physics: ScrollPhysics(),
                 shrinkWrap: true,
               children : food.map((element){
                   return InkWell(

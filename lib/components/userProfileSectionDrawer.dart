@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class UserProfileSectionDrawer extends StatelessWidget {
@@ -5,7 +6,7 @@ class UserProfileSectionDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return UserAccountsDrawerHeader(
       accountName: Text(
-        'Praveen Kumar',
+        'Hello Bro!',
         style: const TextStyle(
             color: Color(0xff213e3b),
             fontSize: 18.0,
@@ -13,7 +14,7 @@ class UserProfileSectionDrawer extends StatelessWidget {
             fontWeight: FontWeight.w500),
       ),
       accountEmail: Text(
-        'kpravin627@gmail.com',
+        FirebaseAuth.instance.currentUser.phoneNumber,
         style: const TextStyle(
             color: Color(0xff213e3b),
             fontSize: 14.0,

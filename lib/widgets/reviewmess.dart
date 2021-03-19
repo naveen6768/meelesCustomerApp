@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ReviewPage extends StatelessWidget {
-  String selfemail = FirebaseAuth.instance.currentUser.email;
+  String selfemail = FirebaseAuth.instance.currentUser.phoneNumber;
   var selfrating = {'Rating': 1.0, 'Review' : ''};
   double sr = 0;
   int no_of_ratings = 0,nor;
@@ -16,7 +16,7 @@ class ReviewPage extends StatelessWidget {
   final _key = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    String mess_email = Provider.of<MessDetailsData>(context).messemailid;
+    String mess_email = Provider.of<MessDetailsData>(context).messphone;
   var ref = obj.collection('Mess').doc(mess_email).collection('Rating').doc(selfemail);
   
     Future<void> reviewbox()async {
@@ -123,29 +123,31 @@ SizedBox(height:24),
                               if (_key.currentState.validate()) {
                                _key.currentState.save();
                               await ref.set({
-                                'Name': FirebaseAuth.instance.currentUser.displayName,
+                                'Name': '${selfemail.substring(0,7)}*******',
+                                'Phone No': selfemail,
                                 'Rating': newRating,
                                 'Review': newReview,
                                 'Date' : Timestamp.fromDate(DateTime.now()),
                                }).whenComplete(()async{
-                                 obj.runTransaction((transaction) async {
-                                 DocumentSnapshot snapshot = await transaction.get(ref.parent.parent);
-                                if(nor == 0|| (sr!=0 && nor == 1))
-                                  nor = nor +1;
-                                 double newMessRating;
-                                  // print(' old rating ${selfrating['Rating']}');
-                                  // print('Sr value $sr');
-                                  // print(' new ratin $newRating');
-                                  print('No of rating $nor');
-                                 if(sr !=0)
-                                 newMessRating = (snapshot.data()['Rating'] * nor + newRating - sr)/nor;
-                                 else
-                                 newMessRating = (snapshot.data()['Rating'] * nor + newRating)/(nor+1);
-                                 print('updated $newMessRating');
-                                 transaction.update(ref.parent.parent, {'Rating': num.parse(newMessRating.toStringAsFixed(2))});
+                                //  obj.runTransaction((transaction) async {
+                                //  DocumentSnapshot snapshot = await transaction.get(ref.parent.parent);
+                                // if(nor == 0|| (sr!=0 && nor == 1))
+                                //   nor = nor +1;
+                                //  double newMessRating;
+                                //   // print(' old rating ${selfrating['Rating']}');
+                                //   // print('Sr value $sr');
+                                //   // print(' new ratin $newRating');
+                                //   print('No of rating $nor');
+                                //  if(sr !=0)
+                                //  newMessRating = (snapshot.data()['Rating'] * nor + newRating - sr)/nor;
+                                //  else
+                                //  newMessRating = (snapshot.data()['Rating'] * nor + newRating)/(nor+1);
+                                //  print('updated $newMessRating');
+                                //  transaction.update(ref.parent.parent, {'Rating': num.parse(newMessRating.toStringAsFixed(2))});
                                  Navigator.of(context).pop();
             
-                               });});
+                               //});
+                               });
                                 
                               }
                             },

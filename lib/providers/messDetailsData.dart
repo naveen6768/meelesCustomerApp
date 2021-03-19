@@ -9,6 +9,7 @@ class MessDetailsData with ChangeNotifier {
   Map<String, dynamic> mess_details;
   String show = 'Both';
   String landmark = 'KIET College';
+  var phoneNo;
   int bookings;
   Map<String, dynamic> seatsleft;
   var messemail,day,lunchtime,dinnertime,isopen;
@@ -125,8 +126,9 @@ class MessDetailsData with ChangeNotifier {
     return landmark;
   }
 
-  void setmessvalue(me,lt,dt,io,){
+  void setmessvalue(me,lt,dt,io,ph){
     messemail = me;
+    phoneNo = ph;
     lunchtime = lt;
     dinnertime = dt;
     isopen = io;
@@ -137,7 +139,7 @@ class MessDetailsData with ChangeNotifier {
     notifyListeners();
   }
 
-  String get messemailid{
-    return messemail;
+  String get messphone{
+    return phoneNo;
   }
 }

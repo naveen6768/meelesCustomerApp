@@ -3,6 +3,9 @@ import 'package:Meeles/helpers/helpermethods.dart';
 import 'package:Meeles/models/messDetails.dart';
 import 'package:Meeles/providers/auth.dart';
 import 'package:Meeles/providers/messDetailsData.dart';
+import 'package:Meeles/screens/messListScreen.dart';
+import 'package:Meeles/screens/searchScreen.dart';
+import 'package:Meeles/screens/viewallthalis.dart';
 import 'package:Meeles/widgets/homeScreenDrawer.dart';
 import 'package:Meeles/widgets/homemenutile.dart';
 import 'package:Meeles/widgets/homemesstile.dart';
@@ -35,6 +38,14 @@ class _MainScreenState extends State<MainScreen> {
 		time = HelperMethods().type();
 		return Scaffold(
 			key: _drawerKey,
+      floatingActionButton: FloatingActionButton.extended(label: Text('Search', style: TextStyle(fontFamily: 'Lato',fontWeight: FontWeight.bold),),
+      icon:Icon(Icons.search),
+        backgroundColor: Theme.of(context).primaryColor,
+        tooltip: 'Search',
+       onPressed: (){
+            //Provider.of<Auth>(context,listen: false).authlogout();
+            Navigator.of(context).pushNamed(SearchScreen.routeName);
+          },),
 			appBar: AppBar(
 				title: TextAppBar(),
 				centerTitle: false,
@@ -48,8 +59,9 @@ class _MainScreenState extends State<MainScreen> {
 				  },
 				),
         actions: [
-          TextButton(child : Text('Logout'), onPressed: (){
-            Provider.of<Auth>(context,listen: false).authlogout();
+          IconButton(icon : Icon(Icons.person, color:Colors.black), onPressed: (){
+            //Provider.of<Auth>(context,listen: false).authlogout();
+            //Navigator.of(context).pushNamed(SearchScreen.routeName);
           },)
         ],
 			),
@@ -149,23 +161,33 @@ class _MainScreenState extends State<MainScreen> {
             Row(
 							mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 							children: [
-								Container(
-									//height: 50,
-									width: width * 0.45,
-									child: InkWell(
-										child: Image(
-											image: AssetImage('images/rest.jpeg'),
-										),
-									),
+								InkWell(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(MessListScreen.routeName);
+                  },
+                                  child: Container(
+								  	//height: 50,
+								  	width: width * 0.45,
+								  	child: InkWell(
+								  		child: Image(
+								  			image: AssetImage('images/rest.jpeg'),
+								  		),
+								  	),
+								  ),
 								),
-								Container(
-									//height: 50,
-									width: width * 0.45,
-									child: InkWell(
-										child: Image(
-											image: AssetImage('images/tif.jpeg'),
-										),
-									),
+								InkWell(
+                  onTap: (){
+                    Navigator.of(context).pushNamed(ThaliListScreen.routeName);
+                  },
+                                  child: Container(
+								  	//height: 50,
+								  	width: width * 0.45,
+								  	child: InkWell(
+								  		child: Image(
+								  			image: AssetImage('images/tif.jpeg'),
+								  		),
+								  	),
+								  ),
 								),
 							],
 						),
@@ -246,6 +268,7 @@ class _MainScreenState extends State<MainScreen> {
 						  			);
 						  		}),
 						),
+            SizedBox(height:70),
 					],
 				),
 			),

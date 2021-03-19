@@ -24,7 +24,7 @@ class HelperMethods{
 
   String type(){
     DateTime time = DateTime.now();
-	if( time.hour > 0 && time.hour < 15)
+	if( time.hour > 0 && time.hour < 17)
 		return 'Lunch';
     else return 'Dinner';
 	

@@ -41,7 +41,7 @@ class _ThaliViewState extends State<ThaliView> {
 
   @override
   Widget build(BuildContext context) {
-    widget.mess_email = Provider.of<MessDetailsData>(context).messemailid ;
+    widget.mess_email = Provider.of<MessDetailsData>(context).messphone ;
     print(widget.mess_email);
     return ListView(
     shrinkWrap: true,

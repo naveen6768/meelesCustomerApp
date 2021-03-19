@@ -9,6 +9,7 @@ import 'package:Meeles/screens/messdetail.dart';
 import 'package:Meeles/screens/phone.dart';
 import 'package:Meeles/screens/searchScreen.dart';
 import 'package:Meeles/screens/tabScreen.dart';
+import 'package:Meeles/screens/viewallthalis.dart';
 import 'package:Meeles/screens/viewbookings_screen.dart';
 import 'package:flutter/material.dart';
 import './screens/messOverviewScreen.dart';
@@ -48,14 +49,15 @@ class MyApp extends StatelessWidget {
             primaryColor: Color(0xffB4344D),
             cursorColor: Color(0xffB4344D),
           ),
-          home: (auth.isAuth) ? TabScreen() : PhoneScreen() ,
+          home: (auth.isAuth) ? MainScreen() : PhoneScreen() ,
           routes: {
             MessListScreen.routeName: (context) => MessListScreen(),
+            ThaliListScreen.routeName: (context) => ThaliListScreen(),
             SearchScreen.routeName: (context) => SearchScreen(),
             MainScreen.routeName: (context) => MainScreen(),
             MessDetail.routeName: (context) => MessDetail(),
             MessOverviewScreen.id: (context) => MessOverviewScreen(),
-            BookRecipt.id: (context) => BookRecipt(),
+            //BookRecipt.id: (context) => BookRecipt(),
             ContactUs.routeName: (context) => ContactUs(),
             AboutUs.routeName: (context) => AboutUs(),
             FeedbackForm.routeName: (context) => FeedbackForm(),

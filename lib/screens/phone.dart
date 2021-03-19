@@ -51,9 +51,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
         },
         codeSent: (String verificationId, int resendToken) async {
           print('entered');
-          setState(() {
+          
             id = verificationId;
-          });
+          
           print(id);
         },
         timeout: const Duration(seconds: 120),
@@ -130,9 +130,9 @@ class _PhoneScreenState extends State<PhoneScreen> {
                       },
                       codeSent: (String verificationId, int resendToken) async {
                         print('entered');
-                        setState(() {
+                        
                           id = verificationId;
-                        });
+                        
                         print(id);
                       },
                       timeout: const Duration(seconds: 120),

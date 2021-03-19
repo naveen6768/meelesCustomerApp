@@ -21,7 +21,7 @@ class _ArgsMessState extends State<ArgsMess>  {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<MessDetailsData>(context,listen: false).setmessvalue(widget.data['Email'], widget.data['Lunch End'] , widget.data['Dinner End'], widget.data['Open Whole Day']);
+    Provider.of<MessDetailsData>(context,listen: false).setmessvalue(widget.data['Email'], widget.data['Lunch End'] , widget.data['Dinner End'], widget.data['Open Whole Day'],widget.data['Phone no.']);
     return Container(
       child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -29,7 +29,7 @@ class _ArgsMessState extends State<ArgsMess>  {
         Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-      IconButton(icon: Icon(Icons.arrow_back,color: Colors.black),onPressed: (){ Navigator.of(context).pop(); messdata = null; Provider.of<MessDetailsData>(context,listen:false).setmessvalue(null, null, null, null);},),
+      IconButton(icon: Icon(Icons.arrow_back,color: Colors.black),onPressed: (){ Navigator.of(context).pop(); messdata = null; Provider.of<MessDetailsData>(context,listen:false).setmessvalue(null, null, null, null,null);},),
       Expanded(child: Container(),),
       IconButton(icon: Icon(Icons.call,color: Colors.black,), onPressed: ()async{
       await launch('tel:+91${widget.data['Phone no.']}');

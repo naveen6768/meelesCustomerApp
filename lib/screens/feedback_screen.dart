@@ -39,8 +39,9 @@ class _FeedbackFormState extends State<FeedbackForm> {
         });
         try {
           await FirebaseFirestore.instance.collection('Feedback').add({
-            'Name': FirebaseAuth.instance.currentUser.email,
+            'Name': FirebaseAuth.instance.currentUser.phoneNumber,
             'Feedback': feedback,
+            'Time': DateTime.now(),
           });
         } on PlatformException catch (err) {
           var message = "An Error occured, Please Check your Credentials";
@@ -74,6 +75,9 @@ class _FeedbackFormState extends State<FeedbackForm> {
         // ),
         backgroundColor: Colors.white,
         elevation: 5,
+        leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.black), onPressed: (){
+          Navigator.of(context).pop();
+        },),
       ),
       body: Container(
         margin: EdgeInsets.all(20.0),
