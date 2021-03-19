@@ -42,6 +42,8 @@ dependencies:
   dotted_line: ^2.0.2
   flutter_rating_bar: ^4.0.0
   maps_launcher: ^1.2.2+2
+  pinput: ^0.2.6
+  animated_bottom_navigation_bar: ^0.3.1+1
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +75,7 @@ flutter:
     - images/spinner.gif
     - images/meeles_icon.png
     - images/v.gif
+    - images/thali.jpg
 
   fonts:
     - family: Lato

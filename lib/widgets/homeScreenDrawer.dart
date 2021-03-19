@@ -27,26 +27,26 @@ class HomeScreenDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            DrawerButtons(
-              buttonTitle: 'Wallet',
-              buttonIcon: Icon(
-                Icons.business_center,
-                color: Theme.of(context).accentColor,
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(Wallet.routeName);
-              },
-            ),
-            DrawerButtons(
-              buttonTitle: 'Bookings',
-              buttonIcon: Icon(
-                Icons.business_center,
-                color: Theme.of(context).accentColor,
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(ViewBookings.routeName);
-              },
-            ),
+            // DrawerButtons(
+            //   buttonTitle: 'Wallet',
+            //   buttonIcon: Icon(
+            //     Icons.business_center,
+            //     color: Theme.of(context).accentColor,
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed(Wallet.routeName);
+            //   },
+            // ),
+            // DrawerButtons(
+            //   buttonTitle: 'Bookings',
+            //   buttonIcon: Icon(
+            //     Icons.business_center,
+            //     color: Theme.of(context).accentColor,
+            //   ),
+            //   onPressed: () {
+            //     Navigator.of(context).pushNamed(ViewBookings.routeName);
+            //   },
+            // ),
             DrawerButtons(
               buttonTitle: 'About us',
               buttonIcon: Icon(

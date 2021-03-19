@@ -22,7 +22,7 @@ class HomeMessTile extends StatelessWidget {
           alignment: AlignmentDirectional.bottomStart,
           children: [
           Positioned(
-            child: FadeInImage(placeholder: AssetImage('images/meeles_icon.png'), image: NetworkImage(data['url']),fit: BoxFit.fitHeight, height: 80,),
+            child: FadeInImage(placeholder: AssetImage('images/meeles_icon.png'), image: NetworkImage(data['url']),fit: BoxFit.cover, height: 80,width: 80,),
             top: 0,
             ),
           Positioned(child: Container(

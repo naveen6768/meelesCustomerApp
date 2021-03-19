@@ -28,7 +28,7 @@ class MenuTile extends StatelessWidget {
         child: Stack(
           children: [
             Positioned(
-              child:FadeInImage(height: 140, width: 200,placeholder: AssetImage('images/meeles_icon.png'), image: NetworkImage(data['url']),fit: BoxFit.fitHeight,) ),
+              child:FadeInImage(height: 140, width: 200,placeholder: AssetImage('images/meeles_icon.png'), image: NetworkImage(data['url']),fit: BoxFit.cover,) ),
             Positioned(child: Container(
             padding: EdgeInsets.all(5),
              color: Theme.of(context).primaryColor,

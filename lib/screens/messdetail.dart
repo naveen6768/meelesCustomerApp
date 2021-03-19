@@ -27,6 +27,8 @@ class _MessDetailState extends State<MessDetail> {
       //appBar: AppBar(),
       body: SafeArea(
         child:SingleChildScrollView(
+                  physics: ScrollPhysics(),
+
           child: Container(
             margin: EdgeInsets.all(2),
             padding: EdgeInsets.all(2),

@@ -34,4 +34,12 @@ class Auth with ChangeNotifier {
     else
       return true;
   }
+
+  Future<void> phonelogin(PhoneAuthCredential credential) async {
+    await FirebaseAuth.instance.signInWithCredential(credential);
+    ///name = FirebaseAuth.instance.currentUser.displayName;
+    notifyListeners();
+    return null;
+  }
+  
 }

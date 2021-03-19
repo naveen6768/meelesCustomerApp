@@ -15,48 +15,49 @@ class _TabbarMessProfileState extends State<TabbarMessProfile> {
     double width = MediaQuery.of(context).size.width;
     return 
                 Container(
-                  child: Column(
-                    children: [
-                      Row(children: [
-                        InkWell(
-                          onTap: (){
-                            setState(() {
-                              active = true;
-                            });
-                          },
-                                            child: AnimatedContainer(
-                            duration: Duration(milliseconds: 1),
-                            width:width * 0.48,
-                            height: 28,
-                            padding: EdgeInsets.symmetric(vertical:3),
-                            child: Center(child: Text('Menu', style: TextStyle(fontSize: 18,fontFamily: 'Lato',fontWeight: FontWeight.bold),)),
-                            decoration: BoxDecoration(
-                              border: Border(bottom: BorderSide(color: active ? Theme.of(context).primaryColor : Colors.white)),
-                            ),
-                            ),
-                        ),
+                    
+                    child: Column(
+                      children: [
+                        Row(children: [
                           InkWell(
                             onTap: (){
-                            setState(() {
-                              active = false;
-                            });
-                          },
-                          child: AnimatedContainer(
-                            duration: Duration(milliseconds: 1),
-                            width:width * 0.48,
-                            height: 28,
-                            padding: EdgeInsets.symmetric(vertical:3),
-                            child: Center(child: Text('Review', style: TextStyle(fontSize: 18,fontFamily: 'Lato',fontWeight: FontWeight.bold),)),
-                            decoration: BoxDecoration(
-                              border: Border(bottom: BorderSide(color: !active ? Theme.of(context).primaryColor : Colors.white)),
-                            ),
-                            ),
+                              setState(() {
+                                active = true;
+                              });
+                            },
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 1),
+                              width:width * 0.48,
+                              height: 28,
+                              padding: EdgeInsets.symmetric(vertical:3),
+                              child: Center(child: Text('Menu', style: TextStyle(fontSize: 18,fontFamily: 'Lato',fontWeight: FontWeight.bold),)),
+                              decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: active ? Theme.of(context).primaryColor : Colors.white)),
+                              ),
+                              ),
                           ),
-                      ],),
-                      SizedBox(height:12),
-                      active ? ThaliView():ReviewPage(),
-                    ],
-                  ),
-                );
+                            InkWell(
+                              onTap: (){
+                              setState(() {
+                                active = false;
+                              });
+                            },
+                            child: AnimatedContainer(
+                              duration: Duration(milliseconds: 1),
+                              width:width * 0.48,
+                              height: 28,
+                              padding: EdgeInsets.symmetric(vertical:3),
+                              child: Center(child: Text('Review', style: TextStyle(fontSize: 18,fontFamily: 'Lato',fontWeight: FontWeight.bold),)),
+                              decoration: BoxDecoration(
+                                border: Border(bottom: BorderSide(color: !active ? Theme.of(context).primaryColor : Colors.white)),
+                              ),
+                              ),
+                            ),
+                        ],),
+                        SizedBox(height:12),
+                        active ? ThaliView():ReviewPage(),
+                      ],
+                    ),
+                  );
   }
 }

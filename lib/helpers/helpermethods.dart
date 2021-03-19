@@ -41,7 +41,21 @@ class HelperMethods{
 
         //print(homeMesslist[0].data());
         //print(homeMesslist[1]['Shop Name']);
+        homeMesslist.shuffle();
         return homeMesslist;
+      
+  }
+
+  Future<List> thalilist(day,landmark)async{
+    //print(homeMesslist);
+      if(dayThaliList == null)
+       dayThaliList =  await obj
+						  				.collectionGroup(day)
+						  				.where('Area', isEqualTo: landmark)
+						  				.get().then((value) => value.docs);
+
+        dayThaliList.shuffle();
+        return dayThaliList;
       
   }
 

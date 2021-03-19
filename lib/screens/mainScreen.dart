@@ -38,24 +38,25 @@ class _MainScreenState extends State<MainScreen> {
 			appBar: AppBar(
 				title: TextAppBar(),
 				centerTitle: false,
-				backgroundColor: Theme.of(context).accentColor,
-				// leading: IconButton(
-				//   icon: Icon(Icons.list, color: Colors.black,),
-				//   onPressed: (){
+        elevation: 0,
+				backgroundColor: Colors.white,
+				leading: IconButton(
+				  icon: Icon(Icons.list, color: Colors.black,),
+				  onPressed: (){
 
-				//                 _drawerKey.currentState.openDrawer();
-				//   },
-				// ),
+				                _drawerKey.currentState.openDrawer();
+				  },
+				),
         actions: [
           TextButton(child : Text('Logout'), onPressed: (){
             Provider.of<Auth>(context,listen: false).authlogout();
           },)
         ],
 			),
-			//drawer: HomeScreenDrawer(),
+			drawer: HomeScreenDrawer(),
 			body: Container(
         color: Colors.white70,
-				margin: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+				margin: EdgeInsets.only(left: 10, right: 10, top: 15),
 				child: ListView(
 					shrinkWrap: true,
 					//crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,7 +105,7 @@ class _MainScreenState extends State<MainScreen> {
 							height: 20,
 						),
 						Text(
-							'Top Places for your meal:',
+							'Nearby Places for your meal:',
 							style: TextStyle(
 								color: Colors.black,
 								fontFamily: 'Lato',
@@ -115,13 +116,8 @@ class _MainScreenState extends State<MainScreen> {
 						SizedBox(height: 12),
 						Container(
 						  child: FutureBuilder(
-						  		// future: obj
-						  		// 		.collection('Mess')
-						  		// 		.where('Landmark', isEqualTo: landmark)
-						  		// 		.orderBy('Rating', descending: true)
-						  		// 		.get(),
                   future: HelperMethods().messprofiles(landmark),
-						  		builder: ( context,
+						  		builder: (context,
 						  				AsyncSnapshot snapshot) {
 						  			if (snapshot.hasError) {
 						  				return Text('Something went wrong');
@@ -130,7 +126,7 @@ class _MainScreenState extends State<MainScreen> {
 						  			if (snapshot.connectionState == ConnectionState.waiting) {
 						  				return Container(height: 120,width: double.infinity,);
 						  			}
-                    print(snapshot.data[2].id);
+                    
 						  			return SingleChildScrollView(
 												scrollDirection: Axis.horizontal,
 																							child: new Row(
@@ -189,13 +185,10 @@ class _MainScreenState extends State<MainScreen> {
 						SizedBox(height: 6),
             if(time == 'Lunch')
 						Container(
-						  child: FutureBuilder<QuerySnapshot>(
-						  		future: obj
-						  				.collectionGroup(day)
-						  				.where('Area', isEqualTo: landmark)
-						  				.get(),
-						  		builder: (BuildContext context,
-						  				AsyncSnapshot<QuerySnapshot> snapshot) {
+						  child: FutureBuilder(
+						  		future: HelperMethods().thalilist(day, landmark),
+						  		builder: ( context,
+						  				AsyncSnapshot snapshot) {
 						  			if (snapshot.hasError) {
 						  				return Text('Something went wrong');
 						  			}
@@ -203,11 +196,12 @@ class _MainScreenState extends State<MainScreen> {
 						  			if (snapshot.connectionState == ConnectionState.waiting) {
 						  				return Container(height: 120,width: double.infinity,);
 						  			}
+                  
 						  			return SingleChildScrollView(
 												scrollDirection: Axis.horizontal,
 																							child: new Row(
 						  			  
-						  			  	children: snapshot.data.docs.map((DocumentSnapshot document){
+						  			  	children: snapshot.data.map<Widget>((DocumentSnapshot document){
                           if(document.data()['type'] == 'Lunch')
 						  			  		return MenuTile(document.data(),document.reference);
                           else return Container(height: 0,width: 0,);
@@ -228,13 +222,10 @@ class _MainScreenState extends State<MainScreen> {
 						),
 						SizedBox(height: 6),
 						Container(
-						  child: FutureBuilder<QuerySnapshot>(
-						  		future: obj
-						  				.collectionGroup(day)
-						  				.where('Area', isEqualTo: landmark)
-						  				.get(),
+						  child: FutureBuilder(
+						  		future: HelperMethods().thalilist(day, landmark),
 						  		builder: (BuildContext context,
-						  				AsyncSnapshot<QuerySnapshot> snapshot) {
+						  				AsyncSnapshot snapshot) {
 						  			if (snapshot.hasError) {
 						  				return Text('Something went wrong');
 						  			}
@@ -246,7 +237,7 @@ class _MainScreenState extends State<MainScreen> {
 												scrollDirection: Axis.horizontal,
 																							child: new Row(
 						  			  
-						  			  	children: snapshot.data.docs.map((DocumentSnapshot document){
+						  			  	children: snapshot.data.map<Widget>((DocumentSnapshot document){
                           if(document.data()['type'] == 'Dinner')
 						  			  		return MenuTile(document.data(),document.reference);
                           else return Container(height: 0,width: 0,);
